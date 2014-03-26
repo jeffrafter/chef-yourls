@@ -61,7 +61,7 @@ end
 
 template "config.php" do
   path "#{node['yourls']['path']}/user/config.php"
-  source "config-sample.php"
+  source "config-sample.php.erb"
   action :create
 end
 
