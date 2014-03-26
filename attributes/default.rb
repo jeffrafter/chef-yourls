@@ -26,6 +26,7 @@ default['yourls']['db_password'] = nil
 default['yourls']['db_name'] = "yourls"
 default['yourls']['db_host'] = "localhost"
 default['yourls']['db_prefix'] = "yourls_"
+default['yourls']['port'] = 80
 default['yourls']['domain'] = nil
 default['yourls']['hours_offset'] = 0
 default['yourls']['lang'] = nil

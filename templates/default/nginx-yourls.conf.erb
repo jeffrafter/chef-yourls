@@ -1,5 +1,5 @@
 server {
-  listen 80;
+  listen <%= node['yourls']['port'] || 80 %>;
   server_name <%= node['yourls']['domain'] %>;
   access_log /var/log/nginx/<%= node['yourls']['domain'] %>.access.log;
   error_log /var/log/nginx/<%= node['yourls']['domain'] %>.error.log;
@@ -10,10 +10,10 @@ server {
   location / {
     index index.php index.html;
     try_files $uri $uri/ /yourls-loader.php?$args;
-	}
+  }
 
   # Prevent hidden files (beginning with a period) from being served
-	location ~ /\. {
+  location ~ /\. {
     access_log off;
     log_not_found off;
     deny all;
