@@ -5,16 +5,36 @@ server {
   error_log /var/log/nginx/<%= node['yourls']['domain'] %>.error.log;
 
   root <%= node['yourls']['path'] %>;
-  index index.php index.html;
   error_page 404 /404.php;
 
   location / {
-    try_files $uri $uri/ /yourls-loader.php;
-    location ~ \.php$ {
-      fastcgi_pass   unix:/var/run/php5-fpm-www.sock;
-      fastcgi_index  index.php;
-      fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
-      include        fastcgi_params;
-    }
+    index index.php index.html;
+    try_files $uri $uri/ /yourls-loader.php?$args;
+	}
+
+  # Prevent hidden files (beginning with a period) from being served
+	location ~ /\. {
+    access_log off;
+    log_not_found off;
+    deny all;
+  }
+
+  location ~ \.php$ {
+    try_files $uri =404;
+
+    # Include the fastcgi_params defaults provided by nginx
+    include /etc/nginx/fastcgi_params;
+    fastcgi_read_timeout <%= node['yourls']['fastcgi_read_timeout'] || '3600s' %>;
+
+    # SCRIPT_FILENAME is a required parameter for things to work properly,
+    # but was missing in the default fastcgi_params on upgrade to nginx 1.4.
+    # We define it here to be sure that it exists.
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+    # Use the upstream for php5-fpm that we defined in nginx.conf
+    fastcgi_pass unix:/var/run/php-fpm-www.sock;
+
+    # And get to serving the file!
+    fastcgi_index index.php;
   }
 }
