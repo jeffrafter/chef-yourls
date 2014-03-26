@@ -19,5 +19,21 @@
 # limitations under the License.
 #
 
-default['yourls']['url']      = "https://github.com/YOURLS/YOURLS/archive/1.7.tar.gz"
+default['yourls']['url'] = "https://github.com/YOURLS/YOURLS/archive/1.7.tar.gz"
 default['yourls']['checksum'] = "c13bd61eeb5150c70ad6b8dda402de7e"
+default['yourls']['db_user'] = nil
+default['yourls']['db_password'] = nil
+default['yourls']['db_name'] = "yourls"
+default['yourls']['db_host'] = "localhost"
+default['yourls']['db_prefix'] = "yourls_"
+default['yourls']['site'] = nil
+default['yourls']['hours_offset'] = 0
+default['yourls']['lang'] = nil
+default['yourls']['unique_urls'] = true
+default['yourls']['private'] = true
+default['yourls']['cookiekey'] = nil
+default['yourls']['users'] = []
+default['yourls']['debug'] = false
+default['yourls']['url_convert'] = 36
+default['yourls']['reserved_url'] = nil
+

@@ -28,7 +28,7 @@
 yourls_src_filename = ::File.basename(node['yourls']['url'])
 yourls_src_filepath = "#{Chef::Config['file_cache_path']}/#{yourls_src_filename}"
 yourls_extract_path = "#{Chef::Config['file_cache_path']}/yourls/#{node['yourls']['checksum']}"
-yourls_dest_path = node['yourls']['dest_path']
+yourls_dest_path = node['yourls']['path']
 
 remote_file yourls_src_filepath do
   source node['yourls']['url']
@@ -58,3 +58,11 @@ bash "copy_yourls" do
 
   not_if { ::File.exists?(yourls_dest_path) }
 end
+
+template "config.php" do
+  path "#{node['yourls']['path']}/user/config.php"
+  source "config-sample.php"
+  action :create
+end
+
+
