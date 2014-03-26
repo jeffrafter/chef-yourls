@@ -29,7 +29,7 @@ define( 'YOURLS_DB_PREFIX', '<%= node["yourls"]["db_prefix"] || "yourls_" %>' );
 
 /** YOURLS installation URL -- all lowercase and with no trailing slash.
  ** If you define it to "http://site.com", don't use "http://www.site.com" in your browser (and vice-versa) */
-define( 'YOURLS_SITE', 'http://<%= node["yourls"]["domain"] %>' );
+define( 'YOURLS_SITE', 'http://<%= node["yourls"]["domain"] %><%= ":#{node["yourls"]["port"]}" if node["yourls"]["port"].present? %>' );
 
 /** Timezone GMT offset */
 define( 'YOURLS_HOURS_OFFSET', <%= node["yourls"]["hours_offset"] || 0 %> );

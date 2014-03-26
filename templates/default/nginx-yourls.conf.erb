@@ -1,5 +1,5 @@
 server {
-  listen <%= node['yourls']['port'] || 80 %>;
+  listen 80;
   server_name <%= node['yourls']['domain'] %>;
   access_log /var/log/nginx/<%= node['yourls']['domain'] %>.access.log;
   error_log /var/log/nginx/<%= node['yourls']['domain'] %>.error.log;
