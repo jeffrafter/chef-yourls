@@ -81,7 +81,7 @@ define( 'YOURLS_URL_CONVERT', <%= node["yourls"]["url_convert"] || 36 %> );
 * Define here negative, unwanted or potentially misleading keywords.
 */
 $yourls_reserved_URL = array(
-  <%= (node["yourls"]["reserved_url"] || ['porn', 'faggot', 'sex', 'nigger', 'fuck', 'cunt', 'dick', 'gay']).map{|word| "'#{word}'"}.join(', ')
+	<%= (node["yourls"]["reserved_url"] || ['porn', 'faggot', 'sex', 'nigger', 'fuck', 'cunt', 'dick', 'gay']).map{|word| "'#{word}'"}.join(', ') %>
 );
 
 /*
