@@ -1,0 +1,20 @@
+server {
+  listen 80;
+  server_name <%= node['yourls']['domain'] %>;
+  access_log /var/log/nginx/<%= node['yourls']['domain'] %>.access.log;
+  error_log /var/log/nginx/<%= node['yourls']['domain'] %>.error.log;
+
+  root <%= node['yourls']['path'] %>;
+  index index.php index.html;
+  error_page 404 /404.php;
+
+  location / {
+    try_files $uri $uri/ /yourls-loader.php;
+    location ~ \.php$ {
+      fastcgi_pass   unix:/var/run/php5-fpm-www.sock;
+      fastcgi_index  index.php;
+      fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+      include        fastcgi_params;
+    }
+  }
+}

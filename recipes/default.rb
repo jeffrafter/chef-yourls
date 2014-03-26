@@ -65,4 +65,12 @@ template "config.php" do
   action :create
 end
 
+template "nginx-yourls.conf" do
+  path "/etc/nginx/sites-available/default"
+  source "nginx-yourls.conf.erb"
+  action :create
+
+	notifies :reload, resources(:service => "nginx")
+end
+
 
