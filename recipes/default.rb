@@ -28,6 +28,7 @@
 yourls_src_filename = ::File.basename(node['yourls']['url'])
 yourls_src_filepath = "#{Chef::Config['file_cache_path']}/#{yourls_src_filename}"
 yourls_extract_path = "#{Chef::Config['file_cache_path']}/yourls/#{node['yourls']['checksum']}"
+yourls_dest_path = node['yourls']['dest_path']
 
 remote_file yourls_src_filepath do
   source node['yourls']['url']
@@ -41,11 +42,13 @@ bash "extract_yourls" do
   cwd ::File.dirname(yourls_src_filepath)
   code <<-EOH
     mkdir -p #{yourls_extract_path}
+    mkdir -p #{yourls_dest_path}
     tar xzf #{yourls_src_filename} -C #{yourls_extract_path}
     mv #{yourls_extract_path}/*/* #{yourls_extract_path}/
+	  cp -R #{yourls_extract_path} #{yourls_dest_path}
   EOH
 
-  not_if { ::File.exists?(yourls_extract_path) }
+#  not_if { ::File.exists?(yourls_extract_path) }
 end
 
 
