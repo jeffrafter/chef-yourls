@@ -54,7 +54,7 @@ bash "copy_yourls" do
   cwd ::File.dirname(yourls_src_filepath)
   code <<-EOH
     mkdir -p #{yourls_dest_path}
-    cp -R #{yourls_extract_path}/ #{yourls_dest_path}
+    cp -R #{yourls_extract_path}/YOURLS-1.7/* #{yourls_dest_path}/
   EOH
 
 #  not_if { ::File.exists?(yourls_dest_path) }
