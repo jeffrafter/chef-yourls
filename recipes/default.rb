@@ -44,7 +44,7 @@ bash "extract_yourls" do
     rm -rf #{yourls_extract_path}
     mkdir -p #{yourls_extract_path}
     cd #{yourls_extract_path}
-    tar xzf #{yourls_src_filename}
+    tar xzf #{yourls_src_filepath}
   EOH
 
 #  not_if { ::File.exists?(yourls_extract_path) }
