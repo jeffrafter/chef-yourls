@@ -43,7 +43,6 @@ bash "extract_yourls" do
   code <<-EOH
     mkdir -p #{yourls_extract_path}
     tar xzf #{yourls_src_filename} -C #{yourls_extract_path}
-    mv #{yourls_extract_path}/*/* #{yourls_extract_path}/
   EOH
 
   not_if { ::File.exists?(yourls_extract_path) }
@@ -53,7 +52,7 @@ bash "copy_yourls" do
   cwd ::File.dirname(yourls_src_filepath)
   code <<-EOH
     mkdir -p #{yourls_dest_path}
-    cp -R #{yourls_extract_path}/*/* #{yourls_dest_path}
+    cp -R #{yourls_extract_path} #{yourls_dest_path}
   EOH
 
   not_if { ::File.exists?(yourls_dest_path) }
