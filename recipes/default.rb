@@ -47,7 +47,7 @@ bash "extract_yourls" do
     tar xzf #{yourls_src_filepath}
   EOH
 
-#  not_if { ::File.exists?(yourls_extract_path) }
+  not_if { ::File.exists?(yourls_extract_path) }
 end
 
 bash "copy_yourls" do
@@ -57,7 +57,7 @@ bash "copy_yourls" do
     cp -R #{yourls_extract_path}/YOURLS-1.7/* #{yourls_dest_path}/
   EOH
 
-#  not_if { ::File.exists?(yourls_dest_path) }
+  not_if { ::File.exists?(yourls_dest_path) }
 end
 
 template "config.php" do

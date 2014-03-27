@@ -9,7 +9,7 @@ server {
   error_log /var/log/nginx/<%= node['yourls']['domain'] %>.error.log;
 
   root <%= node['yourls']['path'] %>;
-  error_page 404 /404.php;
+  error_page 404 /404.html;
 
   location = /favicon.ico {
     log_not_found off;
@@ -22,22 +22,38 @@ server {
     access_log off;
   }
 
-  location ^~ /(css|images|js)/* {
+  location ^~ /(css|images|js)/ {
     allow all;
     try_files $uri $uri/;
   }
 
-  location ^~ /(includes|pages|user)/* {
+  location ^~ /(includes|pages|user)/ {
     deny all;
     log_not_found off;
     access_log off;
   }
 
+  location = /404.html {
+    try_files /404.html =404;
+    log_not_found on;
+    access_log on;
+  }
+
+  # When the script does not find something, or a 404 occurs deeper
+  # then a redirect to the root is made. If you don't capture this
+  # explicitly you will get a redirect loop
+  location = / {
+    index index.php index.html;
+
+    # For now, everything hitting the root is just being sent to 404
+    # Comment or remove this line if you have an index.html
+    try_files /index.php /index.html /404.html =404;
+  }
+
   # Everything in location goes to args, unless one of the
   # regex rules below takes precedence
   location / {
-    index index.php index.html;
-    try_files $uri /yourls-loader.php?$args;
+    rewrite ^ /yourls-loader.php?$args;
   }
 
   # Prevent hidden files (beginning with a period) from being served
@@ -48,16 +64,13 @@ server {
 
   # This is a more specific path for admin to allow for additional
   # http auth or special logging
-  location ~ /admin/*\.php$ {
-    try_files $uri =404;
-    fastcgi_read_timeout <%= node['yourls']['fastcgi_read_timeout'] || '3600s' %>;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    fastcgi_pass php-fpm;
-    fastcgi_index index.php;
+  location /admin/ {
+    index index.php;
   }
 
   location ~ \.php$ {
     try_files $uri =404;
+    include /etc/nginx/fastcgi_params;
     fastcgi_read_timeout <%= node['yourls']['fastcgi_read_timeout'] || '3600s' %>;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     fastcgi_pass php-fpm;
