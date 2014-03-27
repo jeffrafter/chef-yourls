@@ -41,21 +41,23 @@ end
 bash "extract_yourls" do
   cwd ::File.dirname(yourls_src_filepath)
   code <<-EOH
+    rm -rf #{yourls_extract_path}
     mkdir -p #{yourls_extract_path}
-    tar xzf #{yourls_src_filename} -C #{yourls_extract_path}
+    cd #{yourls_extract_path}
+    tar xzf #{yourls_src_filename}
   EOH
 
-  not_if { ::File.exists?(yourls_extract_path) }
+#  not_if { ::File.exists?(yourls_extract_path) }
 end
 
 bash "copy_yourls" do
   cwd ::File.dirname(yourls_src_filepath)
   code <<-EOH
     mkdir -p #{yourls_dest_path}
-    cp -R #{yourls_extract_path} #{yourls_dest_path}
+    cp -R #{yourls_extract_path}/ #{yourls_dest_path}
   EOH
 
-  not_if { ::File.exists?(yourls_dest_path) }
+#  not_if { ::File.exists?(yourls_dest_path) }
 end
 
 template "config.php" do
