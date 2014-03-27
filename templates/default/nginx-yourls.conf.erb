@@ -19,7 +19,7 @@ server {
     deny all;
   }
 
-  location ~ \.php$ {
+  location /yourls-loader.php$ {
     try_files $uri =404;
 
     # Include the fastcgi_params defaults provided by nginx
